@@ -2,62 +2,34 @@ namespace DemoApp {
     using System;
     using System.Collections.Generic;
     using Caliburn.Micro;
-    using StructureMap;
-    using StructureMap.Graph;
-    using StructureMap.Configuration.DSL;
+    using Autofac;
     using System.Linq;
+    using Caliburn.Micro.Autofac;
+    using System.Windows;
 
-    public class AppBootstrapper : BootstrapperBase
+    public class AppBootstrapper : AutofacBootstrapper<ShellViewModel>
     {
-
-        IContainer _container;
-
         public AppBootstrapper()
         {
             Initialize();
         }
 
-        protected override void Configure()
+        protected override void ConfigureContainer(ContainerBuilder builder)
         {
-
-            _container = new Container(c => c.AddRegistry<DefaultRegistry>());
 
         }
 
-        protected override object GetInstance(Type service, string key)
+        protected override void ConfigureBootstrapper()
         {
-            object instance = null;
-
-            if (string.IsNullOrWhiteSpace(key))
-            {
-                instance = _container.TryGetInstance(service);
-            }
-            else
-            {
-
-                instance = _container.TryGetInstance(service,key);
-            }
-
-            if (instance != null)
-                return instance;
-
-            throw new InvalidOperationException("Could not locate any instances.");
+            base.ConfigureBootstrapper();
+            EnforceNamespaceConvention = false;
         }
 
-        protected override IEnumerable<object> GetAllInstances(Type service)
+        protected override void OnStartup(object sender, StartupEventArgs e)
         {
-            return _container.GetAllInstances(service).Cast<object>();
-
+            DisplayRootViewFor<ShellViewModel>();
         }
 
-        protected override void BuildUp(object instance)
-        {
-            _container.BuildUp(instance);
-        }
-
-        protected override void OnStartup(object sender, System.Windows.StartupEventArgs e)
-        {
-            DisplayRootViewFor<IShell>();
-        }
+        
     }
 }
