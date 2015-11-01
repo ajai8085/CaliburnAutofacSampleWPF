@@ -2,7 +2,32 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="ShellView" Height="300" Width="300">
+    <Window.Resources>
+        <DataTemplate x:Key="CustomerTemplate">
+            <StackPanel>
+                <TextBox Text="{Binding FirstName}"></TextBox>
+            </StackPanel>
+        </DataTemplate>
+    </Window.Resources>
     <Grid>
-        
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Text="First Name" ></TextBlock>
+        <TextBox Grid.Column="1" Text="{Binding FirstName}" ></TextBox>
+        <TextBlock Grid.Column="2" Text="{Binding FirstName}"></TextBlock>
+
+
+        <Button Grid.Row="1" x:Name="Save">Save</Button>
+
+        <ComboBox ItemsSource="{Binding Customers}" ItemTemplate="{StaticResource CustomerTemplate}" ></ComboBox>
     </Grid>
 </Window>
