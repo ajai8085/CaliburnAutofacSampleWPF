@@ -6,6 +6,7 @@ namespace DemoApp {
     using System.Linq;
     using Caliburn.Micro.Autofac;
     using System.Windows;
+    using DependencyResolution;
 
     public class AppBootstrapper : AutofacBootstrapper<ShellViewModel>
     {
@@ -16,7 +17,7 @@ namespace DemoApp {
 
         protected override void ConfigureContainer(ContainerBuilder builder)
         {
-
+            builder.RegisterModule<DefaultModule>();
         }
 
         protected override void ConfigureBootstrapper()

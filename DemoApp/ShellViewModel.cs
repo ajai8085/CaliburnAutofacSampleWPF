@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
+using System.Windows;
 
 namespace DemoApp
 {
@@ -11,33 +12,56 @@ namespace DemoApp
     {
         public ShellViewModel()
         {
-
-            Customers = new ObservableCollection<Customer>( new DataServices().GetCustomers());
+            this.DisplayName = "Entry";
+          
         }
-        private string firstName;
+        private string _firstName;
 
         public string FirstName
         {
-            get { return firstName; }
+            get { return _firstName; }
             set
             {
-                firstName = value;
-                NotifyOfPropertyChange();
+                if (this.SetValue(ref _firstName, value))
+                    NotifyOfPropertyChange(() => CanSave);
+            }
+        }
+        
+        private string _lastName;
+
+        public string LastName
+        {
+            get { return _lastName; }
+            set
+            {
+                this.SetValue(ref _lastName,value);
+                    NotifyOfPropertyChange(() => CanSave);
             }
         }
 
-        private ObservableCollection<Customer> customers;
+        private int _age;
 
-        public ObservableCollection<Customer> Customers
+        public int Age
         {
-            get { return customers; }
-            set { customers = value; }
+            get { return _age; }
+            set
+            {
+                if(this.SetValue(ref _age, value))
+                NotifyOfPropertyChange(() => CanSave);
+            }
         }
 
+        public bool CanSave
+        {
+            get
+            {
+                return (Age > 0 && !string.IsNullOrWhiteSpace(FirstName) && !string.IsNullOrWhiteSpace(LastName));
+            }
+        }
 
         public void Save()
         {
-
+            MessageBox.Show("Saved");
         }
 
         
